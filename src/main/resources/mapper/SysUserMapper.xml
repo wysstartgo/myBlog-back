@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.user.mapper.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.user.domain.SysUser">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="nickname" property="nickname" />
+        <result column="role_id" property="roleId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="delete_status" property="deleteStatus" />
+        <result column="group_id" property="groupId" />
+        <result column="group_name" property="groupName" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_user_name" property="createUserName" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="update_user_name" property="updateUserName" />
+        <result column="gender" property="gender" />
+        <result column="phone_number" property="phoneNumber" />
+        <result column="id_card" property="idCard" />
+        <result column="special_area" property="specialArea" />
+        <result column="professional_tile" property="professionalTile" />
+        <result column="qr_code" property="qrCode" />
+        <result column="user_img_url" property="userImgUrl" />
+        <result column="description" property="description" />
+    </resultMap>
+
+</mapper>

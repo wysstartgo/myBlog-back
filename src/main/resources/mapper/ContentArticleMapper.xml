@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.content.mapper.ContentArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.content.domain.ContentArticle">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="user_img_url" property="userImgUrl" />
+        <result column="content" property="content" />
+        <result column="content_markdown" property="contentMarkdown" />
+        <result column="title" property="title" />
+        <result column="brief" property="brief" />
+        <result column="content_img_url" property="contentImgUrl" />
+        <result column="create_time" property="createTime" />
+        <result column="views" property="views" />
+        <result column="zans" property="zans" />
+        <result column="stores" property="stores" />
+    </resultMap>
+
+</mapper>
