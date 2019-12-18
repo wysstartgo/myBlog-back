@@ -97,6 +97,8 @@ public class MyBatisPlusGenerator {
                 .setBaseResultMap(true)
                 //生成基本的SQL片段
                 .setBaseColumnList(false)
+//                .setKotlin(true)
+                .setSwagger2(true)
                 // 作者
                 .setAuthor("wuys");
     }

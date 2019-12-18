@@ -26,10 +26,10 @@ import java.util.List;
  * @since 2019-12-11
  */
 @RestController
-@RequestMapping("/content-article")
-public class ContentArticleController {
+@RequestMapping("/{origin}/content-article")
+public class ContentArticleController2 {
 
-     private static final Logger LOG = LoggerFactory.getLogger(ContentArticleController.class);
+     private static final Logger LOG = LoggerFactory.getLogger(ContentArticleController2.class);
 
      @Autowired
      private IContentArticleService service;

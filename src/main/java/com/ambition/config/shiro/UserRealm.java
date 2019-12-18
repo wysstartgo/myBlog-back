@@ -1,7 +1,6 @@
 package com.ambition.config.shiro;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ambition.business.user.service.ISysUserService;
 import com.ambition.common.constants.Constants;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;

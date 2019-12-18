@@ -16,4 +16,12 @@
         <result column="create_user_name" property="createUserName" />
     </resultMap>
 
+    <select id="getAllGroups" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+            id        groupId,
+            group_name groupName
+        FROM sys_group
+        WHERE is_valid='1'
+    </select>
+
 </mapper>
