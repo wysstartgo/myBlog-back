@@ -35,7 +35,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/user")
 @Api(tags = ["用户管理"])
-class SysUserController(@Autowired private val userService: ISysUserService) {
+open class SysUserController(@Autowired private val userService: ISysUserService) {
 
 
     /**

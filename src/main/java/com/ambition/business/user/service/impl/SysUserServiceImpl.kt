@@ -39,8 +39,8 @@ open class SysUserServiceImpl : ServiceImpl<SysUserMapper, SysUser>(), ISysUserS
 
 
     override fun findUserByUsernameAndPassword(username: String, password: String): SysUser {
-        return baseMapper.selectOne(Wrappers.lambdaQuery<SysUser>().eq(SFunction<SysUser, Any> { SysUser::getUsername }, username).eq(SFunction<SysUser, Any>
-        { SysUser::getPassword }, password))
+        return baseMapper.selectOne(Wrappers.lambdaQuery<SysUser>().eq(SFunction<SysUser, Any> { SysUser::username }, username).eq(SFunction<SysUser, Any>
+        { SysUser::password }, password))
     }
 
     /**
@@ -59,7 +59,7 @@ open class SysUserServiceImpl : ServiceImpl<SysUserMapper, SysUser>(), ISysUserS
      * 添加用户
      */
     override fun addUser(sysUser: SysUser): JSONObject {
-        val exist = baseMapper.selectCount(Wrappers.lambdaQuery<SysUser>().eq(SFunction<SysUser, Any> { SysUser::getUsername }, sysUser.username))
+        val exist = baseMapper.selectCount(Wrappers.lambdaQuery<SysUser>().eq(SFunction<SysUser, Any> { SysUser::username }, sysUser.username))
         if (exist > 0) {
             return CommonUtil.errorJson(ErrorEnum.E_10009)
         }

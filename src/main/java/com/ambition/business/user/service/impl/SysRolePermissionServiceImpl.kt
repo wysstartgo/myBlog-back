@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Collectors
 
@@ -24,12 +25,13 @@ import java.util.stream.Collectors
  * @datetime: 2019-12-18 16:09
  * </pre>
  */
+@Service
 open class SysRolePermissionServiceImpl : ServiceImpl<SysRolePermissionMapper, SysRolePermission>(), ISysRolePermissionService {
 
     override fun getPermissionsByRoleId(roleId: Int?): List<Int> {
-        val sysRolePermissions = baseMapper.selectList(Wrappers.lambdaQuery<SysRolePermission>().eq(SFunction<SysRolePermission, Any> { SysRolePermission::getRoleId }, roleId))
+        val sysRolePermissions = baseMapper.selectList(Wrappers.lambdaQuery<SysRolePermission>().eq(SFunction<SysRolePermission, Any> { SysRolePermission::roleId }, roleId))
         return sysRolePermissions.stream().map { sysRolePermission -> sysRolePermission.permissionId }
-                .collect(Collectors.toList())
+                .collect(Collectors.toList<Int>())
     }
 
     @Transactional

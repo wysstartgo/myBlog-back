@@ -5,11 +5,14 @@ import com.ambition.business.user.domain.SysGroup
 import com.ambition.business.user.mapper.SysGroupMapper
 import com.ambition.business.user.service.ISysGroupService
 import com.ambition.common.constants.Constants
+import com.ambition.common.enums.YesOrNoEnum
 import com.ambition.common.util.R
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.core.toolkit.Wrappers
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
+import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -25,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional
  * </pre>
  */
 @Service
-open class SysGroupServiceImpl : ServiceImpl<SysGroupMapper, SysGroup>(),ISysGroupService {
+open class SysGroupServiceImpl : ServiceImpl<SysGroupMapper, SysGroup>(), ISysGroupService {
 
     @Transactional
     override fun getAllGroups(): List<JSONObject> {
@@ -69,5 +72,41 @@ open class SysGroupServiceImpl : ServiceImpl<SysGroupMapper, SysGroup>(),ISysGro
         return if (r) {
             R.ok()
         } else R.error()
+    }
+
+    override fun selectSysGroupList(page: Int, pageSize: Int, name: String): IPage<SysGroup> {
+        var pageSize = pageSize
+        if (pageSize == 0) {
+            pageSize = Constants.DEFAULT_PAGESIZE
+        }
+        val groupPage = Page<SysGroup>(page.toLong(), pageSize.toLong())
+        var sysGroupIPage: IPage<SysGroup>? = null
+        if (StringUtils.isNotEmpty(name)) {
+            sysGroupIPage = baseMapper.selectPage(groupPage, Wrappers.lambdaQuery<SysGroup>().like(SFunction<SysGroup, Any> { SysGroup::groupName}, name)
+                    .eq(SFunction<SysGroup, Any> { SysGroup::isValid }, YesOrNoEnum.YES.value).select(SysGroup::class.java) { i -> true })
+        } else {
+            sysGroupIPage = baseMapper.selectPage(groupPage, Wrappers.lambdaQuery<SysGroup>()
+                    .eq(SFunction<SysGroup, Any> { SysGroup::isValid }, YesOrNoEnum.YES.value).select(SysGroup::class.java) { i -> true })
+        }
+        return sysGroupIPage
+    }
+
+    override fun getGroupList(): List<JSONObject> {
+        //		try {
+        //			return GuavaCacheManager.INSTANCE.SHOP_CACHE.get(Constants.GROUP_ALL_KEY, new Callable<List<JSONObject>>() {
+        //				@Override
+        //				public List<JSONObject> call() throws Exception {
+        //					return baseMapper.getAllShops();
+        //				}
+        //			});
+        //		} catch (ExecutionException e) {
+        //			LOG.error("加载全部店铺列表出错!",e);
+        //		}
+        //		return Collections.EMPTY_LIST;
+        return baseMapper.getAllGroups()
+    }
+
+    override fun getSysGroupList(): List<SysGroup> {
+        return baseMapper.selectList(Wrappers.lambdaQuery())
     }
 }

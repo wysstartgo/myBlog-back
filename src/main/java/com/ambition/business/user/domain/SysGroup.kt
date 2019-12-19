@@ -10,56 +10,55 @@ import java.util.*
  *
  * @title: SysGroup
  * @description:
- * @company: 润投科技
  * @author: wuys
  * @datetime: 2019-12-18 16:49
  * </pre>
  */
 data class SysGroup(
         @TableId(value = "id", type = IdType.AUTO)
-        private var id: Long? = null,
+         var id: Long? = null,
 
         /**
          * 组名称
          */
-        private var groupName: String? = null,
+         var groupName: String? = null,
 
         /**
          * 描述
          */
-        private var description: String? = null,
+         var description: String? = null,
 
         /**
          * 是否有效
          */
-        private var isValid: Int? = null,
+         var isValid: Int? = null,
 
         /**
          * 创建时间
          */
-        private var createTime: Date? = null,
+         var createTime: Date? = null,
 
         /**
          * 创建者id
          */
-        private var createUserId: Long? = null,
+         var createUserId: Long? = null,
 
         /**
          * 更新时间
          */
-        private var updateTime: Date? = null,
+         var updateTime: Date? = null,
 
         /**
          * 更新者id
          */
-        private var updateUserId: Long? = null,
+         var updateUserId: Long? = null,
 
         /**
          * 更新者用户名
          */
-        private var updateUserName: String? = null,
+         var updateUserName: String? = null,
 
         /**
          * 创建者用户名
          */
-        private var createUserName: String? = null)
+         var createUserName: String? = null)

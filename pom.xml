@@ -292,6 +292,11 @@
           <version>${kotlin.version}</version>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-maven-noarg</artifactId>
+          <version>${kotlin.version}</version>
+      </dependency>
 
   </dependencies>
 
@@ -323,6 +328,15 @@
                 </execution>
             </executions>
             <configuration>
+                <compilerPlugins>
+                  <!-- Or "jpa" for JPA support -->
+                  <plugin>no-arg</plugin>
+                </compilerPlugins>
+                <pluginOptions>
+                  <option>no-arg:annotation=com.my.Annotation</option>
+                  <!-- Call instance initializers in the synthetic constructor -->
+                  <!-- <option>no-arg:invokeInitializers=true</option> -->
+                </pluginOptions>
                 <jvmTarget>1.8</jvmTarget>
             </configuration>
         </plugin>

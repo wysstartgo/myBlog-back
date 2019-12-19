@@ -1,29 +1,21 @@
 package com.ambition.business.dict.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.ambition.business.dict.service.IDictCategoryService;
 import com.ambition.business.dict.domain.DictCategory;
+import com.ambition.business.dict.service.IDictCategoryService;
 import com.ambition.business.user.domain.SysUser;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.ambition.common.util.R;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import java.util.List;
-import java.util.Date;
 import com.ambition.common.annotations.AddSysLog;
 import com.ambition.common.annotations.CurrentUser;
 import com.ambition.common.annotations.LoginedUser;
+import com.ambition.common.util.R;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
-
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -72,7 +64,7 @@ public class DictCategoryController {
      @RequestMapping(value = "/add", method = RequestMethod.POST)
      @LoginedUser
      @AddSysLog(descrption = "新增DictCategory")
-     public R save(@CurrentUser@ApiIgnore SysUser sysUser,@RequestBody @Valid DictCategory entity){
+     public R save(@CurrentUser@ApiIgnore SysUser sysUser, @RequestBody @Valid DictCategory entity){
         return service.saveDictCategory(entity);
      }
 

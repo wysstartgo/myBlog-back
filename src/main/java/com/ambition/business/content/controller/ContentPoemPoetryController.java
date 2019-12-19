@@ -1,29 +1,21 @@
 package com.ambition.business.content.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.ambition.business.content.service.IContentPoemPoetryService;
 import com.ambition.business.content.domain.ContentPoemPoetry;
+import com.ambition.business.content.service.IContentPoemPoetryService;
 import com.ambition.business.user.domain.SysUser;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import com.ambition.common.util.R;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import java.util.List;
-import java.util.Date;
 import com.ambition.common.annotations.AddSysLog;
 import com.ambition.common.annotations.CurrentUser;
 import com.ambition.common.annotations.LoginedUser;
+import com.ambition.common.util.R;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
-
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -49,7 +41,7 @@ public class ContentPoemPoetryController {
     @GetMapping(value = "/list")
     @LoginedUser
     @AddSysLog(descrption = "分页查询ContentPoemPoetry列表")
-    public R findListByPage(@CurrentUser@ApiIgnore SysUser sysUser,@RequestParam(name = "page", defaultValue = "1") int page,@RequestParam(name = "pageSize", defaultValue = "20") int pageSize){
+    public R findListByPage(@CurrentUser@ApiIgnore SysUser sysUser, @RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "pageSize", defaultValue = "20") int pageSize){
       return service.findListByPage(page,pageSize,sysUser.getGroupId());
     }
 

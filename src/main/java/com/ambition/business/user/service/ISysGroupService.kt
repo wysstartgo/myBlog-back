@@ -3,6 +3,7 @@ package com.ambition.business.user.service
 import com.alibaba.fastjson.JSONObject
 import com.ambition.business.user.domain.SysGroup
 import com.ambition.common.util.R
+import com.baomidou.mybatisplus.core.metadata.IPage
 
 /**
  * <pre>
@@ -43,5 +44,22 @@ interface ISysGroupService {
     fun saveSysGroup(entity: SysGroup): R
 
     fun updateSysGroupById(entity: SysGroup): R
+
+    /**
+     * 查询列表
+     * @param page
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    fun selectSysGroupList(page: Int, pageSize: Int, name: String): IPage<SysGroup>
+
+    /**
+     * 查询店铺列表
+     * @return
+     */
+    fun getGroupList(): List<JSONObject>
+
+    fun getSysGroupList(): List<SysGroup>
 
 }

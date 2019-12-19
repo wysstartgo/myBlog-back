@@ -8,6 +8,7 @@ import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import com.google.common.cache.LoadingCache
 import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
@@ -25,6 +26,7 @@ import javax.annotation.Resource
  * @datetime: 2019-12-18 15:20
  * </pre>
  */
+@Service
 class CacheServiceImpl:ICacheService {
 
     private val LOG = LoggerFactory.getLogger(CacheServiceImpl::class.java)

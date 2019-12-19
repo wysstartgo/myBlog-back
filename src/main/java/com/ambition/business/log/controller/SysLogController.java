@@ -1,29 +1,23 @@
 package com.ambition.business.log.controller;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.ambition.business.log.service.ISysLogService;
 import com.ambition.business.log.domain.SysLog;
+import com.ambition.business.log.service.ISysLogService;
 import com.ambition.business.user.domain.SysUser;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ambition.common.util.R;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-
-import java.util.List;
-import java.util.Date;
-
 import com.ambition.common.annotations.AddSysLog;
 import com.ambition.common.annotations.CurrentUser;
 import com.ambition.common.annotations.LoginedUser;
+import com.ambition.common.util.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
-
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -35,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/sys-log")
+@Api(tags = "系统日志")
 public class SysLogController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SysLogController.class);
@@ -42,15 +37,13 @@ public class SysLogController {
 	@Autowired
 	private ISysLogService service;
 
-	/**
-	 * 查询分页数据
-	 */
-	@ApiOperation(value = "查询分页数据")
 	@GetMapping(value = "/list")
+	//@AddSysLog
+	@RequiresPermissions("syslog:list")
 	@LoginedUser
-	@AddSysLog(descrption = "分页查询SysLog列表")
-	public R findListByPage(@CurrentUser @ApiIgnore SysUser sysUser, @RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "pageSize", defaultValue = "20") int pageSize) {
-		return service.findListByPage(page, pageSize, sysUser.getGroupId());
+	@ApiOperation(value = "查询系统日志",notes = "查询系统日志")
+	public R selectList(@CurrentUser @ApiIgnore SysUser sysUser, @RequestParam Integer page, @RequestParam Integer pageSize){
+		return R.ok(service.findListByPage(page,pageSize,sysUser.getGroupId()));
 	}
 
 
