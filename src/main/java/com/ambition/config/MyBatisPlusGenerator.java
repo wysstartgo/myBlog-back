@@ -20,9 +20,9 @@ public class MyBatisPlusGenerator {
 
     public static void main(String[] args) {
         //指定包名
-        String packageName = "com.ambition.business.dict";
+        String packageName = "com.ambition.business.olddata";
         //指定生成的表名
-        String[] tableNames = new String[]{"dict_category"};
+        String[] tableNames = new String[]{"poems_info"};
         new MyBatisPlusGenerator().generateByTables(packageName, tableNames);
 
     }
