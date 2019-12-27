@@ -5,8 +5,9 @@ import com.ambition.business.user.domain.SysUser;
 import com.ambition.common.annotations.LoginedUser;
 import com.ambition.common.constants.Constants;
 import com.ambition.common.enums.ErrorEnum;
+import com.ambition.common.util.CookieUtils;
+import com.ambition.common.util.JwtUtil;
 import com.ambition.common.util.R;
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -50,22 +51,29 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			if (authPassport == null || !authPassport.needLogin()) {
 				return true;
 			}
-			SysUser sysUser = (SysUser) SecurityUtils.getSubject().getSession().getAttribute(Constants.SESSION_USER_INFO);
-			if (null != sysUser) {
-				request.setAttribute(Constants.CURRENT_USER,sysUser);
+			Object attribute = request.getAttribute(Constants.CURRENT_USER);
+			if (attribute != null) {
 				return true;
 			} else {
-				try {
-					out = response.getWriter();
-					out.append(JSONObject.toJSONString(R.error(ErrorEnum.USER_NOT_LOGIN.getErrorCode(),ErrorEnum.USER_NOT_LOGIN.getErrorMsg())));
-					return false;
-				} catch (IOException e) {
-					LOG.error("IO异常!", e);
-				} finally {
-					if (out != null) {
-						out.close();
+				String token = CookieUtils.readToken(request);
+				if (null != token) {
+					SysUser sysUser = JwtUtil.getUserInfoFromToken(token);
+					request.setAttribute(Constants.CURRENT_USER, sysUser);
+					return true;
+				} else {
+					try {
+						out = response.getWriter();
+						out.append(JSONObject.toJSONString(R.error(ErrorEnum.USER_NOT_LOGIN.getErrorCode(), ErrorEnum.USER_NOT_LOGIN.getErrorMsg())));
+						return false;
+					} catch (IOException e) {
+						LOG.error("IO异常!", e);
+					} finally {
+						if (out != null) {
+							out.close();
+						}
 					}
 				}
+
 			}
 		}
 		return true;

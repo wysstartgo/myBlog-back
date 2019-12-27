@@ -1,9 +1,7 @@
 package com.ambition.config.shiro;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ambition.business.user.service.ISysUserService;
-import com.ambition.common.constants.Constants;
-import org.apache.shiro.SecurityUtils;
+import com.ambition.business.user.service.ISysPermissionService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -11,7 +9,6 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
@@ -26,10 +23,10 @@ import java.util.Collection;
  * @date: 2017/10/24 10:06
  */
 public class UserRealm extends AuthorizingRealm {
-	private Logger logger = LoggerFactory.getLogger(UserRealm.class);
+	private Logger LOG = LoggerFactory.getLogger(UserRealm.class);
 
 	@Autowired
-	private ISysUserService loginService;
+	private ISysPermissionService permissionService;
 
 	@Override
 	public boolean supports(AuthenticationToken token) {
@@ -37,7 +34,12 @@ public class UserRealm extends AuthorizingRealm {
 		return token instanceof StatelessToken;
 	}
 
+
+
 	/**
+	 * 这里虽然不能直接取到request的cookie中的权限信息，但是因为有缓存，所以不至于太频繁，
+	 * 目前是去库中查询权限列表来做处理，也可以自己加一层后端缓存来减少查询频率
+	 *
 	 * 授权
 	 * @param principals
 	 * @return
@@ -45,13 +47,13 @@ public class UserRealm extends AuthorizingRealm {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		Session session = SecurityUtils.getSubject().getSession();
-		//查询用户的权限
-		JSONObject permission = (JSONObject) session.getAttribute(Constants.SESSION_USER_PERMISSION);
-//		logger.info("permission的值为:" + permission);
-//		logger.info("本用户权限为:" + permission.get("permissionList"));
 		//为当前用户设置角色和权限
 		//授权
+		String username = (String) principals.getPrimaryPrincipal();
+		if (username == null){
+			return null;
+		}
+		JSONObject permission = permissionService.getUserPermission(username);
 		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 		authorizationInfo.addStringPermissions((Collection<String>) permission.get("permissionList"));
 		return authorizationInfo;

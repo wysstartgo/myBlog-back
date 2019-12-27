@@ -1,12 +1,13 @@
 package com.ambition.business.content.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -52,6 +53,8 @@ public class ContentArticle implements Serializable {
     private Long zans;
 
     private Long stores;
+
+    private String author;
 
 
 }

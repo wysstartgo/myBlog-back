@@ -27,14 +27,7 @@ public enum ErrorEnum {
 
 	AUTH_DENIED("403", "没有权限，请联系管理员授权"),
 
-	USER_NOT_LOGIN("90004","用户未登录!"),
-	Store_Not_Enough("90005","库存不足!"),
-	Medic_Not_Found("90006","该药品不存在!"),
-	Medic_Exist("90007","该名称的药品已经存在!"),
-	Store_Unit_Not_Invalid("90008","药品单位既不是包装单位也不是最小单位!"),
-	Productor_Not_Exist("90009","药品供应商不存在，无法修改，请前往添加"),
-	EXCEL_CANNOT_EMPTY("90010","excel不能为空"),
-	Patient_User_Not_Found_InShop("90011","在该店铺没找到患者");
+	USER_NOT_LOGIN("90004","用户未登录!");
 
 	private String errorCode;
 

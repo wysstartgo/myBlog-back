@@ -67,6 +67,39 @@ public class JwtUtil {
 		return encode(SECRET, claims, SALT);
 	}
 
+	/**
+	 * 生成权限token
+	 * @param jsonObject
+	 * @return
+	 */
+	public static String generatePermToken(JSONObject jsonObject){
+		if (jsonObject == null){
+			return "";
+		}
+		Map<String, Object> claims = new HashMap<>(3);
+		claims.put(INFO, jsonObject.toJSONString());
+		claims.put(CREATED, new Date());
+		claims.put("company", COMPANY);
+		return encode(SECRET, claims, SALT);
+	}
+
+	/**
+	 * 获取权限信息
+	 * @param token
+	 * @return
+	 */
+	public static JSONObject getUserPermFromToken(String token) {
+		Claims claims = decode(SECRET, token, SALT);
+		Object obj = claims.get(INFO);
+		if (obj == null) {
+			return null;
+		}
+		if (obj instanceof String) {
+			String infoStr = (String) obj;
+			return JSONObject.parseObject(infoStr);
+		}
+		return null;
+	}
 
 	/**
 	 * 从token中获取用户信息

@@ -17,6 +17,7 @@
         <result column="views" property="views" />
         <result column="zans" property="zans" />
         <result column="stores" property="stores" />
+        <result column="author" property="author"/>
     </resultMap>
 
 </mapper>

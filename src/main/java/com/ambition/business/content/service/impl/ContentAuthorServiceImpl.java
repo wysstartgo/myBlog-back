@@ -1,8 +1,8 @@
 package com.ambition.business.content.service.impl;
 
-import com.ambition.business.content.domain.ContentPoemPoetry;
-import com.ambition.business.content.mapper.ContentPoemPoetryMapper;
-import com.ambition.business.content.service.IContentPoemPoetryService;
+import com.ambition.business.content.domain.ContentAuthor;
+import com.ambition.business.content.mapper.ContentAuthorMapper;
+import com.ambition.business.content.service.IContentAuthorService;
 import com.ambition.common.constants.Constants;
 import com.ambition.common.util.R;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -21,10 +21,10 @@ import java.util.List;
  * </p>
  *
  * @author wuys
- * @since 2019-12-11
+ * @since 2019-12-24
  */
 @Service
-public class ContentPoemPoetryServiceImpl extends ServiceImpl<ContentPoemPoetryMapper, ContentPoemPoetry> implements IContentPoemPoetryService {
+public class ContentAuthorServiceImpl extends ServiceImpl<ContentAuthorMapper, ContentAuthor> implements IContentAuthorService {
 
     @Override
     @Transactional
@@ -32,10 +32,10 @@ public class ContentPoemPoetryServiceImpl extends ServiceImpl<ContentPoemPoetryM
      if (pageSize == 0) {
         pageSize = Constants.DEFAULT_PAGESIZE;
      }
-     Page<ContentPoemPoetry> dictPage = new Page<>(page, pageSize);
-     IPage<ContentPoemPoetry> sysDictIPage = null;
-     LambdaQueryWrapper<ContentPoemPoetry> lambdaQueryWrapper = Wrappers.<ContentPoemPoetry>lambdaQuery();
-     sysDictIPage = baseMapper.selectPage(dictPage, lambdaQueryWrapper.select(ContentPoemPoetry.class, i -> true));
+     Page<ContentAuthor> dictPage = new Page<>(page, pageSize);
+     IPage<ContentAuthor> sysDictIPage = null;
+     LambdaQueryWrapper<ContentAuthor> lambdaQueryWrapper = Wrappers.<ContentAuthor>lambdaQuery();
+     sysDictIPage = baseMapper.selectPage(dictPage, lambdaQueryWrapper.select(ContentAuthor.class, i -> true));
      return R.ok(sysDictIPage);
     }
 
@@ -50,13 +50,12 @@ public class ContentPoemPoetryServiceImpl extends ServiceImpl<ContentPoemPoetryM
 
     @Override
     public R getById(Long id){
-      ContentPoemPoetry e = super.getById(id);
+      ContentAuthor e = super.getById(id);
       return R.ok(e);
     }
 
     @Override
-    @Transactional
-    public R saveContentPoemPoetry(ContentPoemPoetry entity){
+    public R saveContentAuthor(ContentAuthor entity){
       boolean r = this.save(entity);
       if(r){
         return R.ok();
@@ -65,7 +64,7 @@ public class ContentPoemPoetryServiceImpl extends ServiceImpl<ContentPoemPoetryM
     }
 
     @Override
-    public R updateContentPoemPoetryById(ContentPoemPoetry entity){
+    public R updateContentAuthorById(ContentAuthor entity){
         boolean r = this.updateById(entity);
         if(r){
             return R.ok();

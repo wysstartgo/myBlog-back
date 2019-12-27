@@ -18,6 +18,8 @@
         <result column="stores" property="stores" />
         <result column="zans" property="zans" />
         <result column="explanation" property="explanation" />
+        <result column="author" property="author"/>
+        <result column="author_id" property="authorId"/>
     </resultMap>
 
 </mapper>

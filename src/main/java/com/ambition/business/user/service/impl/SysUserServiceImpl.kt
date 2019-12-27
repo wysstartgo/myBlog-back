@@ -38,9 +38,8 @@ open class SysUserServiceImpl : ServiceImpl<SysUserMapper, SysUser>(), ISysUserS
     private val sysRolePermissionService: ISysRolePermissionService? = null
 
 
-    override fun findUserByUsernameAndPassword(username: String, password: String): SysUser {
-        return baseMapper.selectOne(Wrappers.lambdaQuery<SysUser>().eq(SFunction<SysUser, Any> { SysUser::username }, username).eq(SFunction<SysUser, Any>
-        { SysUser::password }, password))
+    override fun findUserByUsernameAndPassword(username: String, password: String): SysUser? {
+        return baseMapper.selectOne(Wrappers.query<SysUser>().eq("username", username).eq("password", password))
     }
 
     /**

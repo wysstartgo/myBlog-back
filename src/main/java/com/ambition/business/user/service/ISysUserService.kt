@@ -23,7 +23,7 @@ interface ISysUserService : IService<SysUser> {
      * @param password
      * @return
      */
-    fun findUserByUsernameAndPassword(username: String, password: String): SysUser
+    fun findUserByUsernameAndPassword(username: String, password: String): SysUser?
 
     /**
      * 用户列表

@@ -60,12 +60,16 @@ public class ShiroConfiguration {
 		filterChainDefinitionMap.put("/templates/**", "anon");
 		filterChainDefinitionMap.put("/login/auth", "anon");
 		filterChainDefinitionMap.put("/login/logout", "anon");
+//		filterChainDefinitionMap.put("/test/list","anon");
+//		filterChainDefinitionMap.put("/testkt/list","anon");
 		filterChainDefinitionMap.put("/error", "anon");
 		//swagger放行
 		filterChainDefinitionMap.put("/swagger-ui.html", "anon");
 		filterChainDefinitionMap.put("/swagger-resources", "anon");
 		filterChainDefinitionMap.put("/v2/api-docs", "anon");
+		filterChainDefinitionMap.put("/swagger-resources/configuration/ui","anon");
 		filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
+		filterChainDefinitionMap.put("/swagger-resources/configuration/security", "anon");
 		filterChainDefinitionMap.put("/configuration/security", "anon");
 		filterChainDefinitionMap.put("/configuration/ui", "anon");
 		filterChainDefinitionMap.put("/**", "authc");

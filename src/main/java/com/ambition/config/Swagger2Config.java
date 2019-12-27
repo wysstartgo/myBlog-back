@@ -66,7 +66,7 @@ public class Swagger2Config {
 
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).forCodeGeneration(true)
 				.select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-				.apis(RequestHandlerSelectors.basePackage("com.ambition.business.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.ambition.business"))
 				.paths(regex("^.*(?<!error)$"))
 				.build()
 				.securitySchemes(securitySchemes())

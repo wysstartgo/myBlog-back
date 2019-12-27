@@ -17,6 +17,8 @@
         <result column="content_category_name" property="contentCategoryName" />
         <result column="user_img_url" property="userImgUrl" />
         <result column="stores" property="stores" />
+        <result column="author" property="author"/>
+        <result column="content_id" property="content_id"/>
     </resultMap>
 
 </mapper>

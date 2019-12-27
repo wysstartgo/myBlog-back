@@ -73,6 +73,7 @@ public class BExceptionHandler {
     }
 
     private void logErrorMsg(Exception e,HttpServletRequest request) {
+        log.error("",e);
         log.error(new StringBuilder("error msg is:").append(e.getMessage()).append("    ").append(getErrorMsg(request)).toString());
     }
 

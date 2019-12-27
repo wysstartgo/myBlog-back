@@ -13,7 +13,7 @@ package com.ambition.common.constants;
  */
 public interface Constants {
 
-	String APP_ID = "medicine_system";
+	String APP_ID = "myBlog";
 
 	/**
 	 * 无效任务标识
@@ -22,9 +22,6 @@ public interface Constants {
 
 	long SYS_ID = 1;
 
-	String COMMON_SHOP_NAME = "店铺公用";
-
-	String COMMON_SHOP_USER_NAME = "管理员";
 
 	int DEFAULT_PAGESIZE = 20;
 
@@ -42,11 +39,23 @@ public interface Constants {
 	 */
 	String SESSION_USER_INFO = "userInfo";
 
-	String SESSION_USER_PERMISSION = "userPermission";
 
 	String CURRENT_USER = "current_user";
 
 	String GROUP_ALL_KEY = "group_all";
+
+
+	String SHIRO_KEY = "blog_key";
+
+	String SHIRO_SALT = "zhongwanshequ";
+
+	String AUTH = "auth_token";
+
+	String AUTH_PERM = "perm_auth";
+
+	String ADMIN_TOKEN = "admin-token";
+
+	int MAX_AGE = 60 * 60;
 
 
 }

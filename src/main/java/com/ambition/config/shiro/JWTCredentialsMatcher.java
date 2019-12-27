@@ -19,23 +19,22 @@ import org.apache.shiro.util.ByteSource;
  * @datetime: 2019-11-29 15:00
  * </pre>
  */
-public class JWTCredentialsMatcher implements CredentialsMatcher{
+public class JWTCredentialsMatcher implements CredentialsMatcher {
 
 	/**
-	 *
 	 * @param token
 	 * @param info
 	 * @return
 	 */
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-		if (info instanceof SimpleAuthenticationInfo){
+		if (info instanceof SimpleAuthenticationInfo) {
 			SimpleAuthenticationInfo simpleAuthenticationInfo = (SimpleAuthenticationInfo) info;
 			PrincipalCollection principals = info.getPrincipals();
-			if (principals.isEmpty()){
+			if (principals.isEmpty()) {
 				return false;
 			}
-			if (token instanceof StatelessToken){
+			if (token instanceof StatelessToken) {
 				//用户信息
 				String primaryPrincipal = (String) principals.getPrimaryPrincipal();
 				String tokenPrincipal = (String) token.getPrincipal();
@@ -44,19 +43,19 @@ public class JWTCredentialsMatcher implements CredentialsMatcher{
 				String toHex = simpleAuthenticationInfo.getCredentialsSalt().toHex();
 				StatelessToken statelessToken = (StatelessToken) token;
 				String toHex1 = ByteSource.Util.bytes(statelessToken.getSalt()).toHex();
-				if (primaryPrincipal.equals(tokenPrincipal) && credentials.equals(credentials1) && toHex.equals(toHex1)){
-					if (JwtUtil.isTokenExpired(credentials)){
+				if (primaryPrincipal.equals(tokenPrincipal) && credentials.equals(credentials1) && toHex.equals(toHex1)) {
+					if (JwtUtil.isTokenExpired(credentials)) {
 						return false;
 					}
 					SysUser sysUser = JwtUtil.getUserInfoFromToken(credentials);
 					String username = sysUser.getUsername();
-					if (primaryPrincipal.equals(username)){
+					if (primaryPrincipal.equals(username)) {
 						return true;
 					}
 					return false;
 				}
 				return false;
-			}else {
+			} else {
 				return false;
 			}
 		}

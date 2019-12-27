@@ -20,9 +20,9 @@ public class MyBatisPlusGenerator {
 
     public static void main(String[] args) {
         //指定包名
-        String packageName = "com.ambition.business.olddata";
+        String packageName = "com.ambition.business.content";
         //指定生成的表名
-        String[] tableNames = new String[]{"poems_info"};
+        String[] tableNames = new String[]{"content_author"};
         new MyBatisPlusGenerator().generateByTables(packageName, tableNames);
 
     }

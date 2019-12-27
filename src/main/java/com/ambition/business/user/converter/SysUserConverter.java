@@ -23,6 +23,19 @@ public interface SysUserConverter {
 
 	SysUserConverter INSTANCE = Mappers.getMapper(SysUserConverter.class);
 
+	/**
+	 * 从vo转成dto 这里是SysUser
+	 * @param sysUserVo
+	 * @return
+	 */
 	@BeanMapping(resultType = SysUser.class,nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-	SysUser convertFromVo(SysUserVo medicineStoreDetail);
+	SysUser convertFromVo(SysUserVo sysUserVo);
+
+	/**
+	 * 从dto转成vo
+	 * @param sysUser
+	 * @return
+	 */
+	@BeanMapping(resultType = SysUserVo.class,nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+	SysUserVo convertToVo(SysUser sysUser);
 }
