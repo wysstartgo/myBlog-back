@@ -12,9 +12,9 @@ import com.ambition.common.util.R
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.apache.shiro.authz.annotation.RequiresPermissions
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import springfox.documentation.annotations.ApiIgnore
-import javax.annotation.Resource
 
 /**
  * <pre>
@@ -30,7 +30,10 @@ import javax.annotation.Resource
 @RestController
 @RequestMapping("/group")
 @Api(tags = ["组织管理"])
-open class SysGroupController(@Resource private val sysGroupService: ISysGroupService) {
+open class SysGroupController {
+
+    @Autowired
+    private val sysGroupService: ISysGroupService? = null
 
     @PostMapping("/save")
     @LoginedUser
@@ -38,7 +41,7 @@ open class SysGroupController(@Resource private val sysGroupService: ISysGroupSe
     @RequiresPermissions("group:add")
     @ApiOperation(value = "添加组织", notes = "添加组织")
     fun save(@CurrentUser @ApiIgnore sysUser: SysUser, @RequestBody sysGroup: SysGroup): R {
-        return R.ok(sysGroupService.saveSysGroup(sysGroup))
+        return R.ok(sysGroupService!!.saveSysGroup(sysGroup))
     }
 
     @PostMapping("/update")
@@ -47,7 +50,7 @@ open class SysGroupController(@Resource private val sysGroupService: ISysGroupSe
     @RequiresPermissions("group:update")
     @ApiOperation(value = "更新组织", notes = "更新组织")
     fun update(@CurrentUser @ApiIgnore sysUser: SysUser, @RequestBody sysGroup: SysGroup): R {
-        return R.ok(sysGroupService.updateSysGroupById(sysGroup))
+        return R.ok(sysGroupService!!.updateSysGroupById(sysGroup))
     }
 
     @GetMapping("/list")
@@ -55,11 +58,11 @@ open class SysGroupController(@Resource private val sysGroupService: ISysGroupSe
     @LoginedUser
     @RequiresPermissions("group:list")
     @ApiOperation(value = "分页查询组织列表", notes = "分页查询组织列表")
-    fun selectList(@RequestParam(required = false) type: Int?, @RequestParam(required = false) page: Int?, @RequestParam(required = false) pageSize: Int?, @RequestParam(required = false) name: String): R {
+    fun selectList(@RequestParam(required = false) type: Int?, @RequestParam(required = false) page: Int?, @RequestParam(required = false) pageSize: Int?, @RequestParam(required = false) name: String?): R {
         var page = page
         var pageSize = pageSize
         return if (YesOrNoEnum.YES.value == type) {
-            R.ok(sysGroupService.getAllGroups())
+            R.ok(sysGroupService!!.getAllGroups())
         } else {
             if (page == null) {
                 page = 1
@@ -67,7 +70,7 @@ open class SysGroupController(@Resource private val sysGroupService: ISysGroupSe
             if (pageSize == null) {
                 pageSize = Constants.DEFAULT_PAGESIZE
             }
-            R.ok(sysGroupService.selectSysGroupList(page, pageSize, name))
+            R.ok(sysGroupService!!.selectSysGroupList(page, pageSize, name))
         }
     }
 
@@ -79,7 +82,7 @@ open class SysGroupController(@Resource private val sysGroupService: ISysGroupSe
     @ApiOperation(value = "禁用组织", notes = "禁用组织")
     fun forbidden(@CurrentUser @ApiIgnore sysUser: SysUser, @RequestBody sysGroup: SysGroup): R {
         sysGroup.isValid = YesOrNoEnum.NO.value
-        return R.ok(sysGroupService.updateSysGroupById(sysGroup))
+        return R.ok(sysGroupService!!.updateSysGroupById(sysGroup))
     }
 
     @GetMapping("/open")
@@ -88,6 +91,6 @@ open class SysGroupController(@Resource private val sysGroupService: ISysGroupSe
     @RequiresPermissions("group:open")
     @ApiOperation(value = "启用组织", notes = "启用组织")
     fun open(@CurrentUser @ApiIgnore sysUser: SysUser, @RequestBody sysGroup: SysGroup): R {
-        return R.ok(sysGroupService.updateSysGroupById(sysGroup))
+        return R.ok(sysGroupService!!.updateSysGroupById(sysGroup))
     }
 }

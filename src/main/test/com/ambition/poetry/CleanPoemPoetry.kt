@@ -11,6 +11,7 @@ import com.ambition.business.olddata.domain.PoemsAuthor
 import com.ambition.business.olddata.domain.PoemsInfo
 import com.ambition.business.olddata.service.IPoemsAuthorService
 import com.ambition.business.olddata.service.IPoemsInfoService
+import com.ambition.business.user.service.ISysGroupService
 import com.ambition.business.user.service.ISysUserService
 import com.ambition.common.constants.Constants
 import com.ambition.common.enums.ContentCategoryEnum
@@ -46,16 +47,19 @@ class CleanPoemPoetry {
     private var poemsAuthorService: IPoemsAuthorService? = null
 
     @Resource
-    private val contentPoemPoetryService : IContentPoemPoetryService? = null
+    private val contentPoemPoetryService: IContentPoemPoetryService? = null
 
     @Resource
-    private val contentBaseService : IContentBaseService? = null
+    private val contentBaseService: IContentBaseService? = null
 
     @Resource
-    private val contentAuthorService : IContentAuthorService? = null
+    private val contentAuthorService: IContentAuthorService? = null
 
     @Resource
-    private val sysUserService : ISysUserService ? = null
+    private val sysUserService: ISysUserService? = null
+
+    @Resource
+    private val sysGroupService: ISysGroupService? = null
 
     @Test
     fun testConverter() {
@@ -68,11 +72,20 @@ class CleanPoemPoetry {
 
     }
 
+    @Test
+    fun testAutowire() {
+        println("------------------------")
+        println(sysUserService)
+        println("------------------------")
+        println(sysGroupService)
+        println("------------------------")
+    }
+
     /**
      * 唐诗
      */
     @Test
-    fun getPoetryByAuthor(){
+    fun getPoetryByAuthor() {
 
     }
 
@@ -80,7 +93,7 @@ class CleanPoemPoetry {
      * 宋词
      */
     @Test
-    fun getPoemsByAuthor(){
+    fun getPoemsByAuthor() {
 //        val function : SFunction<PoemsAuthor, String> = {p:PoemsAuthor -> p.name}
 
 //        val sum = { a: Int, b: Int -> a + b }
@@ -103,7 +116,7 @@ class CleanPoemPoetry {
 //        val poemsAuthor = poemsAuthorService!!.getOne(Wrappers.lambdaQuery<PoemsAuthor>())
 //        val poemsAuthor = poemsAuthorService!!.getOne(Wrappers.lambdaQuery<PoemsAuthor>().eq({PoemsAuthor::javaClass::name},"杜甫"))
         val queryWrapper = Wrappers.query<PoemsInfo>()
-        queryWrapper.eq("author_id",poemsAuthor.id)
+        queryWrapper.eq("author_id", poemsAuthor.id)
         val list = poemsInfoService!!.list(queryWrapper)
         println(list.size)
         val contentAuthor = ContentAuthor()
@@ -111,8 +124,8 @@ class CleanPoemPoetry {
         contentAuthor.authorName = poemsAuthor.name
         contentAuthor.authorIntroduction = poemsAuthor.introL
         contentAuthorService!!.saveContentAuthor(contentAuthor)
-        list.stream().forEach{t -> print(t.author)}
-        list.stream().forEach{a -> print(a.author)}
+        list.stream().forEach { t -> print(t.author) }
+        list.stream().forEach { a -> print(a.author) }
 
 
         for (poemsInfo in list) {
@@ -124,11 +137,11 @@ class CleanPoemPoetry {
             contentPoemPoetry.userId = Constants.SYS_ID
             contentPoemPoetry.title = poemsInfo.title
             val index = poemsInfo.content.indexOf("|")
-            if(index == -1){
+            if (index == -1) {
                 println(poemsInfo.title + "==================" + poemsInfo.id)
                 continue
             }
-            contentPoemPoetry.brief = poemsInfo.content.substring(0,index)
+            contentPoemPoetry.brief = poemsInfo.content.substring(0, index)
 //            contentPoemPoetry.contentComplex = poemsInfo.content
             contentPoemPoetry.content = ZhConverterUtil.convertToSimple(poemsInfo.content)
             contentPoemPoetry.author = poemsAuthor.name
@@ -185,7 +198,7 @@ class CleanPoemPoetry {
                 contentPoemPoetry.userId = Constants.SYS_ID
                 contentPoemPoetry.title = poemsInfo.title
                 val index = poemsInfo.content.indexOf("|")
-                contentPoemPoetry.brief = poemsInfo.content.substring(0,index)
+                contentPoemPoetry.brief = poemsInfo.content.substring(0, index)
                 contentPoemPoetry.contentComplex = poemsInfo.content
                 contentPoemPoetry.content = ZhConverterUtil.convertToSimple(poemsInfo.content)
                 contentPoemPoetry.author = poemsAuthor.name

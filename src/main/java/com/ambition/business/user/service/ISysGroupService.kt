@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject
 import com.ambition.business.user.domain.SysGroup
 import com.ambition.common.util.R
 import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.extension.service.IService
 
 /**
  * <pre>
@@ -16,7 +17,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage
  * @datetime: 2019-12-18 15:50
  * </pre>
  */
-interface ISysGroupService {
+interface ISysGroupService : IService<SysGroup> {
 
     /**
      * 获取所有组织
@@ -52,7 +53,7 @@ interface ISysGroupService {
      * @param name
      * @return
      */
-    fun selectSysGroupList(page: Int, pageSize: Int, name: String): IPage<SysGroup>
+    fun selectSysGroupList(page: Int?, pageSize: Int?, name: String?): IPage<SysGroup>
 
     /**
      * 查询店铺列表

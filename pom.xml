@@ -311,6 +311,12 @@
           <version>${kotlin.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-allopen</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+
   </dependencies>
 
   <build>
@@ -344,11 +350,17 @@
                 <compilerPlugins>
                   <!-- Or "jpa" for JPA support -->
                   <plugin>no-arg</plugin>
+                  <!-- Or "spring" for the Spring support -->
+                  <plugin>all-open</plugin>
+                  <plugin>spring</plugin>
                 </compilerPlugins>
                 <pluginOptions>
                   <option>no-arg:annotation=com.my.Annotation</option>
                   <!-- Call instance initializers in the synthetic constructor -->
                   <!-- <option>no-arg:invokeInitializers=true</option> -->
+                  <!-- Each annotation is placed on its own line -->
+                  <option>all-open:annotation=com.my.Annotation</option>
+                  <option>all-open:annotation=com.their.AnotherAnnotation</option>
                 </pluginOptions>
                 <jvmTarget>1.8</jvmTarget>
             </configuration>

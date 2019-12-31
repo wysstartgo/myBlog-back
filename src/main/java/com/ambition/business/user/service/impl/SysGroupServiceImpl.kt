@@ -9,7 +9,6 @@ import com.ambition.common.enums.YesOrNoEnum
 import com.ambition.common.util.R
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.core.toolkit.Wrappers
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.apache.commons.lang3.StringUtils
@@ -43,7 +42,7 @@ open class SysGroupServiceImpl : ServiceImpl<SysGroupMapper, SysGroup>(), ISysGr
         }
         val dictPage = Page<SysGroup>(page.toLong(), pageSize.toLong())
         var sysDictIPage: IPage<SysGroup>? = null
-        val lambdaQueryWrapper = Wrappers.lambdaQuery<SysGroup>()
+        val lambdaQueryWrapper = Wrappers.query<SysGroup>()
         sysDictIPage = baseMapper.selectPage(dictPage, lambdaQueryWrapper.select(SysGroup::class.java) { i -> true })
         return R.ok(sysDictIPage)
     }
@@ -74,19 +73,19 @@ open class SysGroupServiceImpl : ServiceImpl<SysGroupMapper, SysGroup>(), ISysGr
         } else R.error()
     }
 
-    override fun selectSysGroupList(page: Int, pageSize: Int, name: String): IPage<SysGroup> {
+    override fun selectSysGroupList(page: Int?, pageSize: Int?, name: String?): IPage<SysGroup> {
         var pageSize = pageSize
         if (pageSize == 0) {
             pageSize = Constants.DEFAULT_PAGESIZE
         }
-        val groupPage = Page<SysGroup>(page.toLong(), pageSize.toLong())
+        val groupPage = Page<SysGroup>(page!!.toLong(), pageSize!!.toLong())
         var sysGroupIPage: IPage<SysGroup>? = null
         if (StringUtils.isNotEmpty(name)) {
-            sysGroupIPage = baseMapper.selectPage(groupPage, Wrappers.lambdaQuery<SysGroup>().like(SFunction<SysGroup, Any> { SysGroup::groupName}, name)
-                    .eq(SFunction<SysGroup, Any> { SysGroup::isValid }, YesOrNoEnum.YES.value).select(SysGroup::class.java) { i -> true })
+            sysGroupIPage = baseMapper.selectPage(groupPage, Wrappers.query<SysGroup>().like("group_name", name)
+                    .eq("is_valid", YesOrNoEnum.YES.value).select(SysGroup::class.java) { true })
         } else {
-            sysGroupIPage = baseMapper.selectPage(groupPage, Wrappers.lambdaQuery<SysGroup>()
-                    .eq(SFunction<SysGroup, Any> { SysGroup::isValid }, YesOrNoEnum.YES.value).select(SysGroup::class.java) { i -> true })
+            sysGroupIPage = baseMapper.selectPage(groupPage, Wrappers.query<SysGroup>()
+                    .eq("is_valid", YesOrNoEnum.YES.value).select(SysGroup::class.java) { true })
         }
         return sysGroupIPage
     }
