@@ -28,7 +28,7 @@ import java.util.List;
  * @since 2019-12-11
  */
 @RestController
-@RequestMapping("/sys-log")
+@RequestMapping("/syslog")
 @Api(tags = "系统日志")
 public class SysLogController {
 

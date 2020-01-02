@@ -10,7 +10,6 @@ import com.ambition.common.constants.Constants
 import com.ambition.common.enums.ErrorEnum
 import com.ambition.common.util.CommonUtil
 import com.baomidou.mybatisplus.core.toolkit.Wrappers
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -58,7 +57,7 @@ open class SysUserServiceImpl : ServiceImpl<SysUserMapper, SysUser>(), ISysUserS
      * 添加用户
      */
     override fun addUser(sysUser: SysUser): JSONObject {
-        val exist = baseMapper.selectCount(Wrappers.lambdaQuery<SysUser>().eq(SFunction<SysUser, Any> { SysUser::username }, sysUser.username))
+        val exist = baseMapper.selectCount(Wrappers.query<SysUser>().eq("username", sysUser.username))
         if (exist > 0) {
             return CommonUtil.errorJson(ErrorEnum.E_10009)
         }
@@ -191,7 +190,7 @@ open class SysUserServiceImpl : ServiceImpl<SysUserMapper, SysUser>(), ISysUserS
     override fun deleteRole(jsonObject: JSONObject): JSONObject {
         val roleInfo = baseMapper.getRoleAllInfo(jsonObject)
         val users = roleInfo["users"] as List<JSONObject>
-        if (users != null && users.size > 0) {
+        if (users != null && users.isNotEmpty()) {
             return CommonUtil.errorJson(ErrorEnum.E_10008)
         }
         baseMapper.removeRole(jsonObject)

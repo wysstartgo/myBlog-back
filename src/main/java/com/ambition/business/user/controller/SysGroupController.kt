@@ -70,7 +70,9 @@ open class SysGroupController {
             if (pageSize == null) {
                 pageSize = Constants.DEFAULT_PAGESIZE
             }
-            R.ok(sysGroupService!!.selectSysGroupList(page, pageSize, name))
+            val list = sysGroupService!!.selectSysGroupList(page, pageSize, name)
+            //println(JSONObject.toJSONString(list))
+            R.ok(list)
         }
     }
 
@@ -81,7 +83,7 @@ open class SysGroupController {
     @RequiresPermissions("group:forbidden")
     @ApiOperation(value = "禁用组织", notes = "禁用组织")
     fun forbidden(@CurrentUser @ApiIgnore sysUser: SysUser, @RequestBody sysGroup: SysGroup): R {
-        sysGroup.isValid = YesOrNoEnum.NO.value
+        sysGroup.setIsValid(YesOrNoEnum.NO.value)
         return R.ok(sysGroupService!!.updateSysGroupById(sysGroup))
     }
 

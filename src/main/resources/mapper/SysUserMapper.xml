@@ -185,7 +185,7 @@
 
     <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
         INSERT INTO sys_role
-        (role_name,create_user_id,create_user_name,group_id,shop_name)
+        (role_name,create_user_id,create_user_name,group_id,group_name)
         VALUES (#{roleName},#{createUserId},#{createUserName},#{groupId},#{groupName})
     </insert>
 

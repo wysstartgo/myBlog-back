@@ -54,8 +54,8 @@ open class SysPermissionServiceImpl : ServiceImpl<SysPermissionMapper, SysPermis
             //查询所有菜单  所有权限
             val menuList = permissionMapper.getAllMenu()
             val permissionList = permissionMapper.getAllPermission()
-            userPermission.put("menuList", menuList)
-            userPermission.put("permissionList", permissionList)
+            userPermission["menuList"] = menuList
+            userPermission["permissionList"] = permissionList
         }
         return userPermission
     }
@@ -68,7 +68,7 @@ open class SysPermissionServiceImpl : ServiceImpl<SysPermissionMapper, SysPermis
         }
         val dictPage = Page<SysPermission>(page.toLong(), pageSize.toLong())
         var sysDictIPage: IPage<SysPermission>? = null
-        val lambdaQueryWrapper = Wrappers.lambdaQuery<SysPermission>()
+        val lambdaQueryWrapper = Wrappers.query<SysPermission>()
         sysDictIPage = baseMapper.selectPage(dictPage, lambdaQueryWrapper.select(SysPermission::class.java) { i -> true })
         return R.ok(sysDictIPage)
     }

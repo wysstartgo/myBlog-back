@@ -34,7 +34,7 @@ open class SysRoleServiceImpl : ServiceImpl<SysRoleMapper, SysRole>(), ISysRoleS
         }
         val dictPage = Page<SysRole>(page.toLong(), pageSize.toLong())
         var sysDictIPage: IPage<SysRole>? = null
-        val lambdaQueryWrapper = Wrappers.lambdaQuery<SysRole>()
+        val lambdaQueryWrapper = Wrappers.query<SysRole>()
         sysDictIPage = baseMapper.selectPage(dictPage, lambdaQueryWrapper.select(SysRole::class.java) { i -> true })
         return R.ok(sysDictIPage)
     }

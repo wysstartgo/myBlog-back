@@ -5,18 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Classname EmailUtil
  * @Description 邮件工具类
- * @Author Created by Lihaodong (alias:小东啊) lihaodongmail@163.com
  * @Date 2019-06-15 10:47
  * @Version 1.0
  */
-@Component
+//@Component
 public class EmailUtil {
 
     /**
