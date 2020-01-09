@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.olddata.mapper.PoemsInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.olddata.domain.PoemsInfo">
+        <id column="id" property="id" />
+        <result column="author_id" property="authorId" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="author" property="author" />
+        <result column="simple_content" property="simpleContent" />
+        <result column="view_count" property="viewCount" />
+        <result column="zan_count" property="zanCount" />
+        <result column="comment_count" property="commentCount" />
+        <result column="store_count" property="storeCount" />
+        <result column="explanation" property="explanation" />
+    </resultMap>
+
+</mapper>

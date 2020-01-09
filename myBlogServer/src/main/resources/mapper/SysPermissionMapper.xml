@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.user.mapper.SysPermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.user.domain.SysPermission">
+        <id column="id" property="id" />
+        <result column="menu_code" property="menuCode" />
+        <result column="menu_name" property="menuName" />
+        <result column="permission_code" property="permissionCode" />
+        <result column="permission_name" property="permissionName" />
+        <result column="required_permission" property="requiredPermission" />
+        <result column="pid" property="pid" />
+        <result column="children" property="children" />
+    </resultMap>
+
+    <resultMap id="permissionMap" type="com.ambition.business.user.domain.One2Many">
+        <id column="userId" property="userId"/>
+        <result column="nickname" property="nickname"/>
+        <result column="roleId" property="roleId"/>
+        <result column="roleName" property="roleName"/>
+        <collection property="menuList" ofType="String">
+            <id column="menuCode" property="menuCode"/>
+        </collection>
+        <collection property="permissionList" ofType="String">
+            <id column="permissionCode" property="permissionCode"/>
+        </collection>
+    </resultMap>
+    <select id="getUserPermissionByRoleId" resultMap="BaseResultMap">
+        SELECT
+            p.*
+            FROM sys_permission p
+            LEFT JOIN sys_role_permission rp ON p.id = rp.`permission_id` AND rp.`delete_status` = '1'
+            WHERE rp.`role_id`= #{roleId}
+    </select>
+
+    <select id="getUserPermission" resultMap="permissionMap">
+        SELECT
+            u.id              userId,
+            u.nickname        nickname,
+            u.role_id         roleId,
+            r.role_name       roleName,
+            p.menu_code       menuCode,
+            p.permission_code permissionCode
+        FROM sys_user u
+                 LEFT JOIN sys_role r ON r.id = u.role_id
+                 LEFT JOIN sys_role_permission rp ON u.role_id = rp.role_id
+                 LEFT JOIN sys_permission p ON rp.permission_id = p.id AND rp.delete_status = '1'
+        WHERE u.id = #{id}
+          AND u.delete_status = '1'
+    </select>
+
+    <select id="getAllPermission" resultType="String">
+        SELECT p.permission_code permissionCode
+        FROM sys_permission p
+        ORDER BY p.id
+    </select>
+    <select id="getAllMenu" resultType="String">
+        SELECT p.menu_code menuCode
+        FROM sys_permission p
+        ORDER BY p.id
+    </select>
+
+    <resultMap id="permissionsMap" type="com.ambition.business.user.domain.One2Many">
+        <id column="menuName" property="menuName"/>
+        <collection property="permissions" ofType="com.alibaba.fastjson.JSONObject">
+            <id column="id" property="id"/>
+            <result column="permissionName" property="permissionName"/>
+            <result column="requiredPermission" property="requiredPermission" javaType="Integer"/>
+            <result column="pid" property="pid" javaType="Integer"/>
+            <result column="children" property="children" javaType="Integer"/>
+        </collection>
+    </resultMap>
+
+    <select id="listAllPermission" resultMap="permissionsMap">
+        SELECT
+            p.id                  id,
+            p.menu_name           menuName,
+            p.permission_name     permissionName,
+            p.required_permission requiredPermission,
+            p.pid pid,
+            p.children children
+        FROM sys_permission p
+    </select>
+
+    <select id="getUserPermissions" resultMap="permissionsMap">
+        SELECT
+        p.id                  id,
+        p.menu_name           menuName,
+        p.permission_name     permissionName,
+        p.required_permission requiredPermission,
+        p.pid pid,
+        p.children children
+        FROM sys_permission p
+        where 1=1
+        <if test="permids != null">
+            and p.id in (
+            <foreach collection="permids" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </select>
+
+</mapper>

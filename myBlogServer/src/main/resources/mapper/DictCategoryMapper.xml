@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.dict.mapper.DictCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.dict.domain.DictCategory">
+        <id column="id" property="id" />
+        <result column="category_name" property="categoryName" />
+        <result column="category_img_url" property="categoryImgUrl" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>

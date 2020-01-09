@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.user.mapper.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.user.domain.SysUser">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="nickname" property="nickname" />
+        <result column="role_id" property="roleId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="delete_status" property="deleteStatus" />
+        <result column="group_id" property="groupId" />
+        <result column="group_name" property="groupName" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_user_name" property="createUserName" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="update_user_name" property="updateUserName" />
+        <result column="gender" property="gender" />
+        <result column="phone_number" property="phoneNumber" />
+        <result column="id_card" property="idCard" />
+        <result column="special_area" property="specialArea" />
+        <result column="professional_tile" property="professionalTile" />
+        <result column="qr_code" property="qrCode" />
+        <result column="user_img_url" property="userImgUrl" />
+        <result column="description" property="description" />
+    </resultMap>
+
+    <select id="countUser" resultType="Integer">
+        SELECT count(0)
+        FROM sys_user u
+        WHERE u.delete_status = '1'
+    </select>
+
+    <resultMap id="userMap" type="com.ambition.business.user.domain.One2Many">
+        <id column="userId" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="roleId" property="roleId"/>
+        <result column="groupId" property="groupId"/>
+        <result column="groupName" property="groupName"/>
+        <result column="roleName" property="roleName"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="lastLoginTime" property="lastLoginTime"/>
+        <result column="deleteStatus" property="deleteStatus"/>
+        <collection property="permissionList" ofType="String">
+            <id column="permissionName" property="permissionName"/>
+        </collection>
+    </resultMap>
+    <select id="listUser" resultMap="userMap" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        u.*,
+        r.role_name                            roleName,
+        CONCAT(p.menu_name, p.permission_name) permissionName
+        FROM (
+        SELECT
+        id                                      userId,
+        username                                username,
+        nickname                                nickname,
+        role_id                                 roleId,
+        group_id                                 groupId,
+        group_name                               groupName,
+        delete_status                           deleteStatus,
+        DATE_FORMAT(create_time, '%Y.%m.%d %T') createTime,
+        DATE_FORMAT(update_time, '%Y.%m.%d %T') updateTime
+        FROM sys_user
+        WHERE delete_status = '1'
+            and create_user_id=#{createUserId}
+            and group_id=#{groupId}
+        ORDER BY id
+        LIMIT #{offSet}, #{pageRow}
+        ) u
+        LEFT JOIN sys_role r ON r.id = u.roleId
+        LEFT JOIN sys_role_permission rp ON rp.role_id = r.id
+        LEFT JOIN sys_permission p ON p.id = rp.permission_id
+
+        ORDER BY u.userId
+    </select>
+
+    <select id="getAllRoles" resultType="com.alibaba.fastjson.JSONObject" parameterType="com.ambition.business.user.domain.SysUser">
+        SELECT
+        id        roleId,
+        role_name roleName
+        FROM sys_role
+        WHERE delete_status='1'
+        <if test="id !='' and id !=null and roleId != 1">
+            and create_user_id=#{id}
+        </if>
+
+    </select>
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO sys_user
+        (username, password, nickname, role_id) VALUES
+            (#{username}, #{password}, #{nickname}, #{roleId})
+    </insert>
+
+    <update id="updateUser" parameterType="com.ambition.business.user.domain.SysUser">
+        UPDATE sys_user
+        SET
+        nickname = #{nickname}
+        <if test="password !='' and password !=null">
+            , password = #{password}
+        </if>
+        , update_time = #{updateTime}
+        , update_user_id = #{updateUserId}
+        , update_user_name = #{updateUserName}
+        , role_id = #{roleId}
+        , delete_status = #{deleteStatus}
+        WHERE id = #{id} and id != 10001
+    </update>
+    <resultMap id="roleMap" type="com.ambition.business.user.domain.One2Many">
+        <id column="roleId" property="roleId"/>
+        <result column="roleName" property="roleName"/>
+        <collection property="users" ofType="com.ambition.business.user.domain.UsersTo">
+            <id column="userId" property="userId"/>
+            <result column="nickname" property="nickname"/>
+        </collection>
+        <collection property="menus" ofType="com.ambition.business.user.domain.One2Many">
+            <id column="menuCode" property="menuCode"/>
+            <result column="menuName" property="menuName"/>
+            <collection property="permissions" ofType="com.ambition.business.user.domain.PermissionTo">
+                <id column="permissionId" property="permissionId"/>
+                <result column="pid" property="pid" javaType="Integer"/>
+                <result column="children" property="children" javaType="Integer"/>
+                <result column="permissionName" property="permissionName"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="listRole" resultMap="roleMap" parameterType="com.ambition.business.user.domain.One2Many">
+        SELECT
+        r.id              roleId,
+        r.role_name       roleName,
+        u.id              userId,
+        u.nickname        nickname,
+        p.id              permissionId,
+        p.menu_code       menuCode,
+        p.menu_name       menuName,
+        p.permission_name permissionName,
+        p.pid pid,
+        p.children children
+        FROM sys_role r
+        LEFT JOIN sys_user u ON r.id = u.role_id AND u.delete_status = '1'
+        LEFT JOIN sys_role_permission rp ON r.id = rp.role_id AND rp.delete_status = '1'
+        LEFT JOIN sys_permission p ON rp.permission_id = p.id
+        WHERE r.delete_status = '1'
+        <if test="id !='' and id !=null and roleId != 1">
+            and r.create_user_id=#{id}
+        </if>
+        ORDER BY r.id, p.id
+    </select>
+    <resultMap id="permissionMap" type="com.ambition.business.user.domain.One2Many">
+        <id column="menuName" property="menuName"/>
+        <collection property="permissions" ofType="com.ambition.business.user.domain.SysPermission">
+            <id column="id" property="id"/>
+            <result column="permissionName" property="permissionName"/>
+            <result column="requiredPermission" property="requiredPermission" javaType="Integer"/>
+            <result column="pid" property="pid" javaType="Integer"/>
+            <result column="children" property="children" javaType="Integer"/>
+        </collection>
+    </resultMap>
+    <select id="listAllPermission" resultMap="permissionMap">
+        SELECT
+            p.id                  id,
+            p.menu_name           menuName,
+            p.permission_name     permissionName,
+            p.required_permission requiredPermission,
+            p.pid pid,
+            p.children children
+        FROM sys_permission p
+    </select>
+
+
+    <select id="getUserPermissions" resultMap="permissionMap">
+        SELECT
+        p.id                  id,
+        p.menu_name           menuName,
+        p.permission_name     permissionName,
+        p.required_permission requiredPermission,
+        p.pid pid,
+        p.children children
+        FROM sys_permission p
+        where 1=1
+        <if test="permids != null">
+            and p.id in (
+            <foreach collection="permids" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </select>
+
+
+
+    <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
+        INSERT INTO sys_role
+        (role_name,create_user_id,create_user_name,group_id,group_name)
+        VALUES (#{roleName},#{createUserId},#{createUserName},#{groupId},#{groupName})
+    </insert>
+
+    <insert id="insertRolePermission">
+        insert into sys_role_permission (role_id, permission_id)
+        values
+        <foreach collection="permissions" item="item" index="index" separator=",">
+            (#{roleId}, #{item})
+        </foreach>
+    </insert>
+
+    <resultMap id="aRole" type="com.ambition.business.user.domain.One2Many">
+        <id column="roleId" property="roleId"/>
+        <result column="roleName" property="roleName"/>
+        <collection property="users" ofType="com.ambition.business.user.domain.UsersTo">
+            <id column="userId" property="userId"/>
+        </collection>
+        <collection property="permissionIds" ofType="Integer">
+            <id column="permissionId" property="permissionId"/>
+        </collection>
+    </resultMap>
+    <select id="getRoleAllInfo" resultMap="aRole">
+        SELECT
+            r.id        roleId,
+            r.role_name roleName,
+            u.id        userId,
+            p.id        permissionId
+        FROM sys_role r
+            LEFT JOIN sys_user u ON r.id = u.role_id AND u.delete_status = '1'
+            LEFT JOIN sys_role_permission rp ON r.id = rp.role_id AND rp.delete_status = '1'
+            LEFT JOIN sys_permission p ON rp.permission_id = p.id
+        WHERE r.id = #{roleId}
+    </select>
+
+    <update id="removeRole">
+        UPDATE sys_role
+        SET
+            delete_status = '2'
+        WHERE id = #{roleId} and id !=1
+    </update>
+    <update id="removeRoleAllPermission">
+        UPDATE sys_role_permission
+        SET
+            delete_status = '2'
+        WHERE role_id = #{roleId}
+    </update>
+
+    <update id="removeOldPermission">
+        UPDATE sys_role_permission
+        SET
+        delete_status = '2'
+        WHERE role_id = #{roleId}
+        AND permission_id in (
+        <foreach collection="permissions" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="updateRoleName">
+        UPDATE sys_role
+        SET
+            role_name = #{roleName}
+        WHERE id = #{roleId}
+    </update>
+    <select id="queryExistUsername" resultType="int">
+        select count(0)
+         from sys_user
+         WHERE username=#{username}
+         AND delete_status='1';
+    </select>
+
+</mapper>

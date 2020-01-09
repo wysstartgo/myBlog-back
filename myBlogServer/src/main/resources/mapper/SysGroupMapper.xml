@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.user.mapper.SysGroupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.user.domain.SysGroup">
+        <id column="id" property="id" />
+        <result column="group_name" property="groupName" />
+        <result column="description" property="description" />
+        <result column="is_valid" property="isValid" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user_id" property="updateUserId" />
+        <result column="update_user_name" property="updateUserName" />
+        <result column="create_user_name" property="createUserName" />
+    </resultMap>
+
+    <select id="getAllGroups" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+            id        groupId,
+            group_name groupName
+        FROM sys_group
+        WHERE is_valid='1'
+    </select>
+
+</mapper>

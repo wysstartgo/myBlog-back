@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ambition.business.log.mapper.SysLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ambition.business.log.domain.SysLog">
+        <id column="id" property="id" />
+        <result column="request_ip" property="requestIp" />
+        <result column="type" property="type" />
+        <result column="user_name" property="userName" />
+        <result column="description" property="description" />
+        <result column="action_method" property="actionMethod" />
+        <result column="action_url" property="actionUrl" />
+        <result column="params" property="params" />
+        <result column="ua" property="ua" />
+        <result column="class_path" property="classPath" />
+        <result column="request_method" property="requestMethod" />
+        <result column="start_time" property="startTime" />
+        <result column="finish_time" property="finishTime" />
+        <result column="consuming_time" property="consumingTime" />
+        <result column="ex_desc" property="exDesc" />
+        <result column="ex_detail" property="exDetail" />
+        <result column="user_id" property="userId" />
+        <result column="group_id" property="groupId" />
+        <result column="group_name" property="groupName" />
+    </resultMap>
+
+</mapper>
