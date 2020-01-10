@@ -61,5 +61,7 @@ public interface Constants {
 
 	int MAX_AGE = 60 * 60;
 
+	String IMG_URL_SPLIT = "blogImages";
+
 
 }
